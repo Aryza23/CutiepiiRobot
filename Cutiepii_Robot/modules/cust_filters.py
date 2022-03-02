@@ -299,7 +299,7 @@ def reply_filter(update, context):
 
     chat_filters = sql.get_chat_triggers(chat.id)
     for keyword in chat_filters:
-        pattern = r"( |^|[^\w])" + re.escape(keyword) + r"( |$|[^\w])"
+        pattern = f"( |^|[^\\w]){re.escape(keyword)}( |$|[^\\w])"
         if re.search(pattern, to_match, flags=re.IGNORECASE):
             if MessageHandlerChecker.check_user(update.effective_user.id):
                 return
@@ -345,10 +345,9 @@ def reply_filter(update, context):
                                 return
                             LOGGER.exception("Error in filters: " + excp.message)
                             return
-                    valid_format = escape_invalid_curly_brackets(
+                    if valid_format := escape_invalid_curly_brackets(
                         text, VALID_WELCOME_FORMATTERS
-                    )
-                    if valid_format:
+                    ):
                         filtext = valid_format.format(
                             first=escape(message.from_user.first_name),
                             last=escape(
@@ -497,7 +496,7 @@ def reply_filter(update, context):
                 try:
                     send_message(update.effective_message, filt.reply)
                 except BadRequest as excp:
-                    LOGGER.exception("Error in filters: " + excp.message)
+                    LOGGER.exception(f"Error in filters: {excp.message}")
             break
 
 

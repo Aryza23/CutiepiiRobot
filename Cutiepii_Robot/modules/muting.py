@@ -100,16 +100,13 @@ def mute(update: Update, context: CallbackContext) -> str:
     chat = update.effective_chat
     user = update.effective_user
     message = update.effective_message
-    
-    user_id, reason = extract_user_and_text(message, args)
-    reply = check_user(user_id, bot, chat)
-   
 
-    if reply:
+    user_id, reason = extract_user_and_text(message, args)
+    if reply := check_user(user_id, bot, chat):
         message.reply_text(reply)
         return ""
 
-    
+
     member = chat.get_member(user_id)
 
     log = (
@@ -223,10 +220,7 @@ def temp_mute(update: Update, context: CallbackContext) -> str:
     message = update.effective_message
 
     user_id, reason = extract_user_and_text(message, args)
-    reply = check_user(user_id, bot, chat)
-
-
-    if reply:
+    if reply := check_user(user_id, bot, chat):
         message.reply_text(reply)
         return ""
 
@@ -300,8 +294,7 @@ def button(update: Update, context: CallbackContext) -> str:
     query: Optional[CallbackQuery] = update.callback_query
     user: Optional[User] = update.effective_user
     bot: Optional[Bot] = context.bot
-    match = re.match(r"unmute_\((.+?)\)", query.data)
-    if match:
+    if match := re.match(r"unmute_\((.+?)\)", query.data):
         user_id = match.group(1)
         chat: Optional[Chat] = update.effective_chat
         member = chat.get_member(user_id)
@@ -314,7 +307,7 @@ def button(update: Update, context: CallbackContext) -> str:
                 can_send_media_messages=True,
                 can_send_other_messages=True,
                 can_add_web_page_previews=True
-        )                
+        )
         unmuted = bot.restrict_chat_member(chat.id, int(user_id), chat_permissions)
         if unmuted:
         	update.effective_message.edit_text(

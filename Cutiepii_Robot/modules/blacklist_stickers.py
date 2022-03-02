@@ -53,8 +53,7 @@ def blackliststicker(update: Update, context: CallbackContext):
     chat = update.effective_chat  # type: Optional[Chat]
     user = update.effective_user  # type: Optional[User]
     bot, args = context.bot, context.args
-    conn = connected(bot, update, chat, user.id, need_admin=False)
-    if conn:
+    if conn := connected(bot, update, chat, user.id, need_admin=False):
         chat_id = conn
         chat_name = dispatcher.bot.getChat(conn).title
     else:
@@ -101,8 +100,7 @@ def add_blackliststicker(update: Update, context: CallbackContext):
     user = update.effective_user  # type: Optional[User]
     words = msg.text.split(None, 1)
     bot = context.bot
-    conn = connected(bot, update, chat, user.id)
-    if conn:
+    if conn := connected(bot, update, chat, user.id):
         chat_id = conn
         chat_name = dispatcher.bot.getChat(conn).title
     else:
@@ -192,8 +190,7 @@ def unblackliststicker(update: Update, context: CallbackContext):
     user = update.effective_user  # type: Optional[User]
     words = msg.text.split(None, 1)
     bot = context.bot
-    conn = connected(bot, update, chat, user.id)
-    if conn:
+    if conn := connected(bot, update, chat, user.id):
         chat_id = conn
         chat_name = dispatcher.bot.getChat(conn).title
     else:

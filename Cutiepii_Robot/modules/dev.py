@@ -135,8 +135,7 @@ def pip_install(update: Update, context: CallbackContext):
         stdout, stderr = process.communicate()
         reply = ""
         stderr = stderr.decode()
-        stdout = stdout.decode()
-        if stdout:
+        if stdout := stdout.decode():
             reply += f"*Stdout*\n`{stdout}`\n"
         if stderr:
             reply += f"*Stderr*\n`{stderr}`\n"
@@ -147,8 +146,7 @@ def pip_install(update: Update, context: CallbackContext):
 @dev_plus
 def leave(update: Update, context: CallbackContext):
     bot = context.bot
-    args = context.args
-    if args:
+    if args := context.args:
         chat_id = str(args[0])
         leave_msg = " ".join(args[1:])
         try:

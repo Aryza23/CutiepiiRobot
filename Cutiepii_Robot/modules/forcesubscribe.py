@@ -60,8 +60,7 @@ def _onUnMuteRequest(client, cb):
         chat_id = cb.message.chat.id
     except:
         return
-    chat_db = sql.fs_settings(chat_id)
-    if chat_db:
+    if chat_db := sql.fs_settings(chat_id):
         channel = chat_db.channel
         try:
             chat_member = client.get_chat_member(chat_id, user_id)
@@ -108,8 +107,7 @@ def _onUnMuteRequest(client, cb):
 @pgram.on_message(filters.text & ~filters.private & ~filters.edited, group=1)
 def _check_member(client, message):
     chat_id = message.chat.id
-    chat_db = sql.fs_settings(chat_id)
-    if chat_db:
+    if chat_db := sql.fs_settings(chat_id):
         try:
             user_id = message.from_user.id
         except:

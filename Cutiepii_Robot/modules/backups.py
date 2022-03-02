@@ -157,11 +157,9 @@ def export_data(update, context):
     chat_id = update.effective_chat.id
     chat = update.effective_chat
     current_chat_id = update.effective_chat.id
-    conn = connected(context.bot, update, chat, user.id, need_admin=True)
-    if conn:
+    if conn := connected(context.bot, update, chat, user.id, need_admin=True):
         chat = dispatcher.bot.getChat(conn)
         chat_id = conn
-        # chat_name = dispatcher.bot.getChat(conn).title
     else:
         if update.effective_message.chat.type == "private":
             update.effective_message.reply_text("This is a group only command!")

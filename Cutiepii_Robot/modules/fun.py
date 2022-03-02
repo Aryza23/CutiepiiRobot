@@ -384,8 +384,8 @@ def shout(update: Update, context: CallbackContext):
 	args = context.args
 	text = " ".join(args)
 	result = [" ".join(list(text))]
-	for pos, symbol in enumerate(text[1:]):
-	    result.append(symbol + " " + "  " * pos + symbol)
+	result.extend(
+	    f'{symbol} ' + "  " * pos + symbol for pos, symbol in enumerate(text[1:]))
 	result = list("\n".join(result))
 	result[0] = text[0]
 	result = "".join(result)
@@ -548,30 +548,28 @@ def gbun(update, context):
 
 
 def gbam(update, context):
-    user = update.effective_user
-    chat = update.effective_chat
-    bot, args = context.bot, context.args
-    message = update.effective_message
+	user = update.effective_user
+	chat = update.effective_chat
+	bot, args = context.bot, context.args
+	message = update.effective_message
 
-    curr_user = html.escape(message.from_user.first_name)
-    user_id = extract_user(message, args)
+	curr_user = html.escape(message.from_user.first_name)
+	if user_id := extract_user(message, args):
+		gbam_user = bot.get_chat(user_id)
+		user1 = curr_user
+		user2 = html.escape(gbam_user.first_name)
 
-    if user_id:
-        gbam_user = bot.get_chat(user_id)
-        user1 = curr_user
-        user2 = html.escape(gbam_user.first_name)
+	else:
+		user1 = curr_user
+		user2 = bot.first_name
 
-    else:
-        user1 = curr_user
-        user2 = bot.first_name
-
-    if update.effective_message.chat.type == "private":
-        return
-    if int(user.id) in DRAGONS or int(user.id) in DEMONS:
-        gbamm = fun_strings.GBAM
-        reason = random.choice(fun_strings.GBAM_REASON)
-        gbam = gbamm.format(user1=user1, user2=user2, chatid=chat.id, reason=reason)
-        context.bot.sendMessage(chat.id, gbam, parse_mode=ParseMode.HTML)
+	if update.effective_message.chat.type == "private":
+	    return
+	if int(user.id) in DRAGONS or int(user.id) in DEMONS:
+	    gbamm = fun_strings.GBAM
+	    reason = random.choice(fun_strings.GBAM_REASON)
+	    gbam = gbamm.format(user1=user1, user2=user2, chatid=chat.id, reason=reason)
+	    context.bot.sendMessage(chat.id, gbam, parse_mode=ParseMode.HTML)
 
 def cuddle(update: Update, context: CallbackContext):
 	bot = context.bot
@@ -581,16 +579,14 @@ def cuddle(update: Update, context: CallbackContext):
 	reply_to = message.reply_to_message or message
 
 	curr_user = html.escape(message.from_user.first_name)
-	user_id = extract_user(message, args)
-
-	if user_id:
-	    cuddled_user = bot.get_chat(user_id)
-	    user1 = curr_user
-	    user2 = html.escape(cuddled_user.first_name)
+	if user_id := extract_user(message, args):
+		cuddled_user = bot.get_chat(user_id)
+		user1 = curr_user
+		user2 = html.escape(cuddled_user.first_name)
 
 	else:
-	    user1 = bot.first_name
-	    user2 = curr_user
+		user1 = bot.first_name
+		user2 = curr_user
 
 	cuddle_type = random.choice(("Text", "Gif"))
 	if cuddle_type == "Gif":
@@ -618,16 +614,14 @@ def lewd(update: Update, context: CallbackContext):
 	reply_to = message.reply_to_message or message
 
 	curr_user = html.escape(message.from_user.first_name)
-	user_id = extract_user(message, args)
-
-	if user_id:
-	    lewd_user = bot.get_chat(user_id)
-	    user1 = curr_user
-	    user2 = html.escape(lewd_user.first_name)
+	if user_id := extract_user(message, args):
+		lewd_user = bot.get_chat(user_id)
+		user1 = curr_user
+		user2 = html.escape(lewd_user.first_name)
 
 	else:
-	    user1 = bot.first_name
-	    user2 = curr_user
+		user1 = bot.first_name
+		user2 = curr_user
 
 	lewd_type = random.choice(("Text", "Gif", "Sticker"))
 	if lewd_type == "Gif":
@@ -657,16 +651,14 @@ def romance(update: Update, context: CallbackContext):
 	reply_to = message.reply_to_message or message
 
 	curr_user = html.escape(message.from_user.first_name)
-	user_id = extract_user(message, args)
-
-	if user_id:
-	    romantic_user = bot.get_chat(user_id)
-	    user1 = curr_user
-	    user2 = html.escape(romantic_user.first_name)
+	if user_id := extract_user(message, args):
+		romantic_user = bot.get_chat(user_id)
+		user1 = curr_user
+		user2 = html.escape(romantic_user.first_name)
 
 	else:
-	    user1 = bot.first_name
-	    user2 = curr_user
+		user1 = bot.first_name
+		user2 = curr_user
 
 	romance_type = random.choice(("Text", "Gif", "Sticker"))
 	if romance_type == "Gif":
@@ -697,16 +689,14 @@ def owo(update: Update, context: CallbackContext):
 	reply_to = message.reply_to_message or message
 
 	curr_user = html.escape(message.from_user.first_name)
-	user_id = extract_user(message, args)
-
-	if user_id:
-	    owo_user = bot.get_chat(user_id)
-	    user1 = curr_user
-	    user2 = html.escape(owo_user.first_name)
+	if user_id := extract_user(message, args):
+		owo_user = bot.get_chat(user_id)
+		user1 = curr_user
+		user2 = html.escape(owo_user.first_name)
 
 	else:
-	    user1 = bot.first_name
-	    user2 = curr_user
+		user1 = bot.first_name
+		user2 = curr_user
 
 	owo_type = random.choice(("Gif", "Sticker"))
 	if owo_type == "Gif":
@@ -732,16 +722,14 @@ def uwu(update: Update, context: CallbackContext):
 	reply_to = message.reply_to_message or message
 
 	curr_user = html.escape(message.from_user.first_name)
-	user_id = extract_user(message, args)
-
-	if user_id:
-	    uwu_user = bot.get_chat(user_id)
-	    user1 = curr_user
-	    user2 = html.escape(uwu_user.first_name)
+	if user_id := extract_user(message, args):
+		uwu_user = bot.get_chat(user_id)
+		user1 = curr_user
+		user2 = html.escape(uwu_user.first_name)
 
 	else:
-	    user1 = bot.first_name
-	    user2 = curr_user
+		user1 = bot.first_name
+		user2 = curr_user
 
 	uwu_type = random.choice(("Gif", "Sticker"))
 	if uwu_type == "Gif":

@@ -185,8 +185,9 @@ def connect_chat(update, context):
                 ]
             else:
                 buttons = []
-            conn = connected(context.bot, update, chat, user.id, need_admin=False)
-            if conn:
+            if conn := connected(
+                context.bot, update, chat, user.id, need_admin=False
+            ):
                 connectedchat = dispatcher.bot.getChat(conn)
                 text = "You are currently connected to *{}* (`{}`)".format(
                     connectedchat.title, conn,
@@ -221,10 +222,11 @@ def connect_chat(update, context):
                         ],
                     )
                 text += "╘══「 Total {} Chats 」".format(
-                    str(len(gethistory)) + " (max)"
+                    f'{len(gethistory)} (max)'
                     if len(gethistory) == 5
-                    else str(len(gethistory)),
+                    else str(len(gethistory))
                 )
+
                 conn_hist = InlineKeyboardMarkup(buttons)
             elif buttons:
                 conn_hist = InlineKeyboardMarkup([buttons])

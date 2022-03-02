@@ -97,8 +97,8 @@ from telethon import Button, events
 @telethn.on(events.NewMessage(pattern="/alive"))
 async def awake(event):
   CUTIEPII = event.sender.first_name
-  CUTIEPII = "**♡ I,m Cutiepii Robot 愛** \n\n"
-  CUTIEPII += "**♡ I'm Working With Awesome Speed**\n\n"
+  CUTIEPII = ("**♡ I,m Cutiepii Robot 愛** \n\n" +
+              "**♡ I'm Working With Awesome Speed**\n\n")
   CUTIEPII += "**♡ Cutiepii: LATEST Version**\n\n"
   CUTIEPII += "**♡ My Creator:** [Rajkumar](t.me/Awesome_RJ)\n\n"
   CUTIEPII += "**♡ python-Telegram-Bot: 13.7**\n\n"
@@ -117,28 +117,28 @@ async def awake(event):
 
     
 def get_readable_time(seconds: int) -> str:
-    count = 0
-    ping_time = ""
-    time_list = []
-    time_suffix_list = ["s", "m", "h", "days"]
+  count = 0
+  ping_time = ""
+  time_list = []
+  time_suffix_list = ["s", "m", "h", "days"]
 
-    while count < 4:
-        count += 1
-        remainder, result = divmod(seconds, 60) if count < 3 else divmod(seconds, 24)
-        if seconds == 0 and remainder == 0:
-            break
-        time_list.append(int(result))
-        seconds = int(remainder)
+  while count < 4:
+      count += 1
+      remainder, result = divmod(seconds, 60) if count < 3 else divmod(seconds, 24)
+      if seconds == 0 and remainder == 0:
+          break
+      time_list.append(int(result))
+      seconds = int(remainder)
 
-    for x in range(len(time_list)):
-        time_list[x] = str(time_list[x]) + time_suffix_list[x]
-    if len(time_list) == 4:
-        ping_time += time_list.pop() + ", "
+  for x in range(len(time_list)):
+      time_list[x] = str(time_list[x]) + time_suffix_list[x]
+  if len(time_list) == 4:
+    ping_time += f'{time_list.pop()}, '
 
-    time_list.reverse()
-    ping_time += ":".join(time_list)
+  time_list.reverse()
+  ping_time += ":".join(time_list)
 
-    return ping_time
+  return ping_time
 
 HELP_MSG = "Click the button below to get help manu in your pm."
 START_MSG = "I'm awake already!\n<b>Haven't slept since:</b> <code>{}</code>"
@@ -729,50 +729,50 @@ def migrate_chats(update: Update, context: CallbackContext):
     raise DispatcherHandlerStop
     
 def main():
-    test_handler = DisableAbleCommandHandler("test", test, run_async=True)
-    start_handler = DisableAbleCommandHandler("start", start, run_async=True)
+  test_handler = DisableAbleCommandHandler("test", test, run_async=True)
+  start_handler = DisableAbleCommandHandler("start", start, run_async=True)
 
-    help_handler = DisableAbleCommandHandler("help", get_help, run_async=True)
-    help_callback_handler = CallbackQueryHandler(help_button, pattern=r"help_.*", run_async=True)
+  help_handler = DisableAbleCommandHandler("help", get_help, run_async=True)
+  help_callback_handler = CallbackQueryHandler(help_button, pattern=r"help_.*", run_async=True)
 
-    settings_handler = DisableAbleCommandHandler("settings", get_settings)
-    settings_callback_handler = CallbackQueryHandler(settings_button, pattern=r"stngs_", run_async=True)
+  settings_handler = DisableAbleCommandHandler("settings", get_settings)
+  settings_callback_handler = CallbackQueryHandler(settings_button, pattern=r"stngs_", run_async=True)
 
-    data_callback_handler = CallbackQueryHandler(cutiepii_callback_data, pattern=r"cutiepii_", run_async=True)
-    donate_handler = DisableAbleCommandHandler("donate", donate, run_async=True)
-    migrate_handler = MessageHandler(Filters.status_update.migrate, migrate_chats, run_async=True)
+  data_callback_handler = CallbackQueryHandler(cutiepii_callback_data, pattern=r"cutiepii_", run_async=True)
+  donate_handler = DisableAbleCommandHandler("donate", donate, run_async=True)
+  migrate_handler = MessageHandler(Filters.status_update.migrate, migrate_chats, run_async=True)
 
-    # dispatcher.add_handler(test_handler)
-    dispatcher.add_handler(start_handler)
-    dispatcher.add_handler(help_handler)
-    dispatcher.add_handler(data_callback_handler)
-    dispatcher.add_handler(settings_handler)
-    dispatcher.add_handler(help_callback_handler)
-    dispatcher.add_handler(settings_callback_handler)
-    dispatcher.add_handler(migrate_handler)
-    dispatcher.add_handler(donate_handler)
+  # dispatcher.add_handler(test_handler)
+  dispatcher.add_handler(start_handler)
+  dispatcher.add_handler(help_handler)
+  dispatcher.add_handler(data_callback_handler)
+  dispatcher.add_handler(settings_handler)
+  dispatcher.add_handler(help_callback_handler)
+  dispatcher.add_handler(settings_callback_handler)
+  dispatcher.add_handler(migrate_handler)
+  dispatcher.add_handler(donate_handler)
 
-    dispatcher.add_error_handler(error_callback)
+  dispatcher.add_error_handler(error_callback)
 
-    if WEBHOOK:
-        LOGGER.info("Using webhooks.")
-        updater.start_webhook(listen="0.0.0.0", port=PORT, url_path=TOKEN)
+  if WEBHOOK:
+      LOGGER.info("Using webhooks.")
+      updater.start_webhook(listen="0.0.0.0", port=PORT, url_path=TOKEN)
 
-        if CERT_PATH:
-            updater.bot.set_webhook(url=URL + TOKEN, certificate=open(CERT_PATH, "rb"))
-        else:
-            updater.bot.set_webhook(url=URL + TOKEN)
+      if CERT_PATH:
+          updater.bot.set_webhook(url=URL + TOKEN, certificate=open(CERT_PATH, "rb"))
+      else:
+          updater.bot.set_webhook(url=URL + TOKEN)
 
-    else:
-        LOGGER.info(f"Cutiepii started, Using long polling. | BOT: [@{dispatcher.bot.username}]")
-        updater.start_polling(timeout=15, read_latency=4, drop_pending_updates=True, allowed_updates=Update.ALL_TYPES)
+  else:
+      LOGGER.info(f"Cutiepii started, Using long polling. | BOT: [@{dispatcher.bot.username}]")
+      updater.start_polling(timeout=15, read_latency=4, drop_pending_updates=True, allowed_updates=Update.ALL_TYPES)
 
-    if len(argv) not in (1, 3, 4):
-        telethn.disconnect()
-    else:
-        telethn.run_until_disconnected()
+  if len(argv) in {1, 3, 4}:
+    telethn.run_until_disconnected()
 
-    updater.idle()
+  else:
+    telethn.disconnect()
+  updater.idle()
 
 try:
     ubot.start()
@@ -781,8 +781,8 @@ except BaseException:
     sys.exit(1)
 
 if __name__ == '__main__':
-    LOGGER.info("Successfully loaded modules: " + str(ALL_MODULES))
-    telethn.start(bot_token=TOKEN)
-    pgram.start()
-    main()
-    idle()
+  LOGGER.info(f"Successfully loaded modules: {str(ALL_MODULES)}")
+  telethn.start(bot_token=TOKEN)
+  pgram.start()
+  main()
+  idle()
